@@ -1,0 +1,138 @@
+#!/usr/bin/env python3
+"""Validate a blind score and deterministically update the competition state."""
+
+from __future__ import annotations
+
+import fcntl
+import json
+import math
+import os
+from pathlib import Path
+from typing import Any
+
+from _witlib import ROOT, WIT, atomic_json, atomic_text, load_json, read_text, sha256_text, utc_now
+
+
+COMPONENTS = {
+    "conceptual_reversal_and_logic": 5,
+    "precision_of_the_pivot": 4,
+    "compression_and_force": 3,
+    "quotable_shape": 3,
+    "originality_without_strain": 2,
+    "human_truth_carried_by_wit": 2,
+    "elegance": 1,
+}
+
+
+def half_point(value: Any, label: str, low: float, high: float) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise ValueError(f"{label} must be numeric")
+    number = float(value)
+    if number < low or number > high or not math.isclose(number * 2, round(number * 2)):
+        raise ValueError(f"{label} must be a half-point value from {low} to {high}")
+    return number
+
+
+judge = ROOT / "judge"
+candidate = load_json(judge / "candidate.json")
+evaluation = load_json(judge / "evaluation.json")
+candidate_id = candidate.get("id")
+expected_fields = {"candidate_id", "raw_scores", "final_score", "rationale"}
+if set(evaluation) != expected_fields:
+    raise SystemExit("evaluation must contain exactly candidate_id, raw_scores, final_score, and rationale")
+if evaluation.get("candidate_id") != candidate_id:
+    raise SystemExit("evaluation candidate_id does not match candidate")
+
+raw_value = evaluation.get("raw_scores")
+if not isinstance(raw_value, dict) or set(raw_value) != set(COMPONENTS):
+    raise SystemExit("raw_scores must contain exactly the seven rubric components")
+raw = {name: half_point(raw_value[name], name, 0, 5) for name in COMPONENTS}
+rationale = evaluation.get("rationale")
+if not isinstance(rationale, str) or not rationale.strip() or len(rationale) > 1000:
+    raise SystemExit("rationale must be a non-empty string of at most 1000 characters")
+
+calculated = max(0, min(100, math.floor(sum(raw[name] * weight for name, weight in COMPONENTS.items()) + 0.5)))
+if evaluation.get("final_score") != calculated:
+    raise SystemExit(f"final_score is invalid; expected {calculated}")
+
+current_input = read_text(ROOT / "input.md")
+criteria_text = read_text(judge / "criteria.md")
+criteria_hash = sha256_text(criteria_text)
+if criteria_hash != sha256_text(read_text(ROOT / "criteria.md")):
+    raise SystemExit("criteria changed during evaluation; retry the candidate")
+lock_path = WIT / "state.lock"
+with lock_path.open("a+") as lock:
+    fcntl.flock(lock, fcntl.LOCK_EX)
+    state_path = WIT / "state.json"
+    state = load_json(state_path) if state_path.exists() else None
+    outcome: str
+    reason: str
+    incumbent_before = None
+    if state is not None:
+        incumbent_before = {
+            "candidate_id": state.get("best_candidate_id"),
+            "score": state.get("best_score"),
+            "sentence": read_text(ROOT / "best.md") if (ROOT / "best.md").exists() else None,
+        }
+
+    if candidate.get("input") != current_input:
+        outcome = "stale"
+        reason = "Input changed before evaluation was finalized."
+    else:
+        same_input = state is not None and state.get("input") == current_input
+        same_rubric = state is not None and state.get("criteria_sha256") == criteria_hash
+        incumbent_score = state.get("best_score") if same_input and same_rubric else None
+
+        if incumbent_score is None or calculated > incumbent_score:
+            atomic_text(ROOT / "best.md", candidate["sentence"] + "\n")
+            atomic_json(state_path, {
+                "schema_version": 1,
+                "input": current_input,
+                "criteria_sha256": criteria_hash,
+                "best_score": calculated,
+                "best_candidate_id": candidate_id,
+                "updated_at": utc_now(),
+            })
+            outcome = "winner"
+            if incumbent_score is not None:
+                reason = f"Scored {calculated}/100, above the incumbent's {incumbent_score}/100."
+            elif state is None:
+                reason = "First evaluated candidate for this competition."
+            elif not same_input:
+                reason = "The input changed, starting a new competition."
+            else:
+                reason = "The scoring rubric changed, starting a new competition."
+        else:
+            outcome = "tie" if calculated == incumbent_score else "loser"
+            reason = (
+                "Tied the incumbent; ties preserve the incumbent."
+                if outcome == "tie"
+                else f"Scored {calculated}/100, below the incumbent's {incumbent_score}/100."
+            )
+
+    record = {
+        "schema_version": 1,
+        "candidate": candidate,
+        "evaluation": {
+            "candidate_id": candidate_id,
+            "criteria_sha256": criteria_hash,
+            "raw_scores": raw,
+            "final_score": calculated,
+            "rationale": rationale.strip(),
+        },
+        "decision": {
+            "outcome": outcome,
+            "reason": reason,
+            "incumbent_before": incumbent_before,
+        },
+        "finalized_at": utc_now(),
+    }
+    archive = WIT / "evaluations" / f"{candidate_id}.json"
+    if archive.exists():
+        raise SystemExit("evaluation was already finalized")
+    atomic_json(archive, record)
+    for exposed in (judge / "candidate.json", judge / "evaluation.json", judge / "criteria.md"):
+        if exposed.exists():
+            exposed.unlink()
+
+print("Evaluation finalized.")

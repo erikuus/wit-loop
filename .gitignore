@@ -1,0 +1,9 @@
+.wit/pending/
+.wit/*.lock
+bin/__pycache__/
+tests/__pycache__/
+creator/input.md
+creator/completion.txt
+judge/candidate.json
+judge/criteria.md
+judge/evaluation.json

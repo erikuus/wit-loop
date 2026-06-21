@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+"""Expose only the current input to the creator workspace."""
+
+from _witlib import ROOT, atomic_text, read_text
+
+
+input_text = read_text(ROOT / "input.md")
+if not input_text:
+    raise SystemExit("input.md is empty")
+
+atomic_text(ROOT / "creator" / "input.md", input_text + "\n")
+print("Creator input prepared.")

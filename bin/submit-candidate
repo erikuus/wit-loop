@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+"""Submit one creator completion without exposing judging state."""
+
+from __future__ import annotations
+
+import secrets
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+from _witlib import ROOT, WIT, atomic_json, join_sentence, read_text
+
+
+if len(sys.argv) != 2:
+    raise SystemExit("usage: submit-candidate COMPLETION_FILE")
+
+completion_path = Path(sys.argv[1]).resolve()
+creator_root = (ROOT / "creator").resolve()
+if completion_path.parent != creator_root:
+    raise SystemExit("completion file must be directly inside the creator workspace")
+
+beginning = read_text(ROOT / "input.md")
+completion = read_text(completion_path)
+sentence = join_sentence(beginning, completion)
+stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
+candidate_id = f"{stamp}-{secrets.token_hex(4)}"
+
+candidate = {
+    "id": candidate_id,
+    "input": beginning,
+    "completion": completion,
+    "sentence": sentence,
+}
+atomic_json(WIT / "pending" / f"{candidate_id}.json", candidate)
+completion_path.unlink()
+print("Candidate submitted.")

@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "id": "20260621T020257343169Z-7723106d",
+    "input": "i’m lonely, please",
+    "completion": "send memes before I start assigning personalities to kitchen appliances.",
+    "sentence": "i’m lonely, please send memes before I start assigning personalities to kitchen appliances."
+  },
+  "evaluation": {
+    "candidate_id": "20260621T020257343169Z-7723106d",
+    "criteria_sha256": "40b3e6d4e9df841df5105e0279e32f7b249150048266a406669013e893dbab4a",
+    "raw_scores": {
+      "conceptual_reversal_and_logic": 2.5,
+      "precision_of_the_pivot": 3.5,
+      "compression_and_force": 2.5,
+      "quotable_shape": 3.0,
+      "originality_without_strain": 3.5,
+      "human_truth_carried_by_wit": 3.0,
+      "elegance": 2.5
+    },
+    "final_score": 59,
+    "rationale": "The image is specific and fresh, and the loneliness-to-appliances leap carries real human recognition. But the turn is more comic escalation than a sharp conceptual reversal, and the phrasing is a little too extended to land with full force."
+  },
+  "decision": {
+    "outcome": "loser",
+    "reason": "Scored 59/100, below the incumbent's 71/100.",
+    "incumbent_before": {
+      "candidate_id": "20260621T010124327012Z-d4e84aa7",
+      "score": 71,
+      "sentence": "i’m lonely, please stop asking me to verify I'm human and start proving someone else is."
+    }
+  },
+  "finalized_at": "2026-06-21T02:16:27+00:00"
+}
