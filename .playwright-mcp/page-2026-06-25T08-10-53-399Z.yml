@@ -1,0 +1,11 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - heading "Wit Loop" [level=1] [ref=e3]
+    - paragraph [ref=e4]: English and Estonian editions
+  - main [ref=e5]:
+    - paragraph [ref=e6]: A small blind system that keeps trying to improve one witty sentence ending.
+    - navigation "Language selection" [ref=e7]:
+      - link "English" [ref=e8] [cursor=pointer]:
+        - /url: html/wit-loop-en.html
+      - link "Eesti" [ref=e9] [cursor=pointer]:
+        - /url: html/wit-loop-et.html

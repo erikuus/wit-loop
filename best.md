@@ -1,1 +1,1 @@
-i’m lonely, please stop asking me to verify I'm human and start proving someone else is.
+i’m lonely, please stop calling my two-person table 'optimistic seating.'

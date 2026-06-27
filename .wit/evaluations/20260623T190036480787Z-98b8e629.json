@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "id": "20260623T190036480787Z-98b8e629",
+    "input": "i’m lonely, please",
+    "completion": "lower your standards and call it networking.",
+    "sentence": "i’m lonely, please lower your standards and call it networking."
+  },
+  "evaluation": {
+    "candidate_id": "20260623T190036480787Z-98b8e629",
+    "criteria_sha256": "40b3e6d4e9df841df5105e0279e32f7b249150048266a406669013e893dbab4a",
+    "raw_scores": {
+      "conceptual_reversal_and_logic": 3.0,
+      "precision_of_the_pivot": 3.0,
+      "compression_and_force": 3.5,
+      "quotable_shape": 3.0,
+      "originality_without_strain": 3.0,
+      "human_truth_carried_by_wit": 3.5,
+      "elegance": 2.5
+    },
+    "final_score": 62,
+    "rationale": "A clear enough turn: private loneliness is reframed as degraded social ambition under the polite label of networking. The idea lands and the pivot word is apt, but the construction is more competent than sharp, with limited elegance and only moderate memorability."
+  },
+  "decision": {
+    "outcome": "loser",
+    "reason": "Scored 62/100, below the incumbent's 80/100.",
+    "incumbent_before": {
+      "candidate_id": "20260621T130152595401Z-b98be9d7",
+      "score": 80,
+      "sentence": "i’m lonely, please put me in a group chat so I can be ignored at scale"
+    }
+  },
+  "finalized_at": "2026-06-23T20:16:24+00:00"
+}

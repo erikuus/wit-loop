@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "id": "20260625T100251219341Z-1fd4033b",
+    "input": "i’m lonely, please",
+    "completion": "put the \"us\" in \"delusions.\"",
+    "sentence": "i’m lonely, please put the \"us\" in \"delusions.\""
+  },
+  "evaluation": {
+    "candidate_id": "20260625T100251219341Z-1fd4033b",
+    "criteria_sha256": "40b3e6d4e9df841df5105e0279e32f7b249150048266a406669013e893dbab4a",
+    "raw_scores": {
+      "conceptual_reversal_and_logic": 3.5,
+      "precision_of_the_pivot": 3.0,
+      "compression_and_force": 4.0,
+      "quotable_shape": 3.0,
+      "originality_without_strain": 3.0,
+      "human_truth_carried_by_wit": 3.5,
+      "elegance": 2.5
+    },
+    "final_score": 66,
+    "rationale": "A cleanly legible turn: the plea for togetherness is granted only inside delusion. The pivot is compact and apt, but the familiar \"put the X in Y\" template keeps it from feeling fully fresh or effortlessly quotable."
+  },
+  "decision": {
+    "outcome": "loser",
+    "reason": "Scored 66/100, below the incumbent's 80/100.",
+    "incumbent_before": {
+      "candidate_id": "20260621T130152595401Z-b98be9d7",
+      "score": 80,
+      "sentence": "i’m lonely, please put me in a group chat so I can be ignored at scale"
+    }
+  },
+  "finalized_at": "2026-06-25T11:18:09+00:00"
+}

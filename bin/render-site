@@ -1,0 +1,1160 @@
+#!/usr/bin/env python3
+
+from __future__ import annotations
+
+import glob
+import html
+import json
+import re
+import statistics
+from datetime import datetime
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parent.parent
+HTML_DIR = ROOT / "html"
+STYLE_DIR = ROOT / "assets" / "styles"
+
+CRITERIA = [
+    (
+        "conceptual_reversal_and_logic",
+        {
+            "en": ("Reversal and logic", "The ending should turn the opening in a way that is surprising but still clean."),
+            "et": ("Pööre ja loogika", "Pööre peab olema ootamatu, aga mitte seosetu või absurdne."),
+        },
+    ),
+    (
+        "precision_of_the_pivot",
+        {
+            "en": ("Precision", "It should feel as if no word can be replaced without making the line less exact."),
+            "et": ("Täpsus", "Peaks tekkima tunne, et ühtegi sõna ei saa asendada teisega ilma, et lause muutuks vähem tabavaks."),
+        },
+    ),
+    (
+        "compression_and_force",
+        {
+            "en": ("Compression", "The line should do a lot with very few words."),
+            "et": ("Lühidus ja jõud", "Mõte peab kohale jõudma väheste sõnadega. Midagi ülearust ei tohiks olla."),
+        },
+    ),
+    (
+        "quotable_shape",
+        {
+            "en": ("Quotable shape", "The full sentence should sound finished and memorable."),
+            "et": ("Meeldejäävus", "Terve lause peaks jääma meelde. Seda peaks tahtma tsiteerida."),
+        },
+    ),
+    (
+        "originality_without_strain",
+        {
+            "en": ("Freshness", "The idea should feel new without looking desperate to be clever."),
+            "et": None,
+        },
+    ),
+    (
+        "human_truth_carried_by_wit",
+        {
+            "en": ("Human truth", "The joke should reveal something real about people, not just juggle words."),
+            "et": ("Inimlik tõde", "Vaimukus peaks tabama midagi sügavat inimloomuses. See ei tohiks olla ainult sõnamäng."),
+        },
+    ),
+    (
+        "double_tone",
+        {
+            "en": ("Double tone", "The line should feel funny and sad at once, playful on the surface and deeper underneath."),
+            "et": ("Mitmekihilisus", "See võiks olla korraga kurb ja naljakas, sügav ja mänguline."),
+        },
+    ),
+    (
+        "elegance",
+        {
+            "en": ("Elegance", "The line should move lightly rather than feeling clumsy or overbuilt."),
+            "et": ("Sujuvus", "Lause peaks mõjuma loomulikult, mitte kunstlikult ja punnitatult."),
+        },
+    ),
+]
+
+
+COPY = {
+    "en": {
+        "lang": "en",
+        "title": "Can AI Write Wit?",
+        "subtitle": "A plain-language account of an experiment with one unfinished sentence",
+        "lang_switch_label": "Eesti",
+        "lang_switch_href": "wit-loop-et.html",
+        "hero_title": "Can AI write a witty ending?",
+        "hero_lede": "This is a small experiment with one unfinished sentence. The question is whether an AI loop can produce an ending that people would recognize as wit, not just as a joke-shaped phrase.",
+        "fragment_label": "Given beginning",
+        "experiment_label": "The Experiment",
+        "experiment_text": "The task is deliberately narrow: give the system the first half of a sentence, define what kind of wit we are looking for, and let it make many independent attempts.",
+        "source_label": "The Sentence",
+        "source_text": "The sentence comes from Melissa Broder. The loop receives only the beginning, so the original ending is held back until the end of the page.",
+        "criteria_label": "The Criteria",
+        "criteria_intro": "The rubric in criteria.md treats wit as a sharp turn that is exact, compressed, memorable, fresh, truthful, and graceful. Each item is scored from 0 to 5, then weighted into a final score out of 100.",
+        "process_label": "The Loop",
+        "process_intro": "The loop is the heart of the experiment. If one conversation tried to invent, judge, and choose all at once, the model could easily flatter its own taste or drift into fuzzy self-justification. Here those jobs are split apart on purpose, so each step knows only what it truly needs.",
+        "steps": [
+            ("Creator", "Sees only the sentence beginning. It does not see the rubric, earlier attempts, or the current winner."),
+            ("Judge", "Sees one completed sentence and the criteria. It does not know what came before or what score it must beat."),
+            ("Finalizer", "Deterministic code recalculates the score, compares it with the hidden incumbent, and updates the winner only if the number is higher."),
+        ],
+        "results_label": "The Attempts",
+        "results_intro": "Between {first_date} and {last_date}, the loop produced <strong>{scored_count}</strong> scored attempts. <strong>{winner_count}</strong> of them became the best-so-far line. <strong>{pending_count}</strong> newer attempt is still waiting for a score.",
+        "results_note": "Best scoring attempts appear first.",
+        "table_headers": {
+            "score": "Score",
+            "ending": "Ending",
+        },
+        "result_label": "What AI Chose",
+        "ai_result_intro": "So, after {scored_count} scored attempts, the loop thought its best creation was:",
+        "ai_result_note": "The judge scored it <strong>{best_score}/100</strong>. That is strong, but it is not the same thing as canonical wit.",
+        "origin_label": "The Original",
+        "origin_intro": "Melissa Broder's original sentence is much better:",
+        "origin_line": "I am lonely, please leave me alone.",
+        "origin_p1": "It is short, exact, and almost perfectly mirrored: the plea for company immediately becomes a demand for distance.",
+        "origin_p2": "The turn is funny because it exposes a contradiction. It can sound like a joke about fashionable loneliness, and at the same time like a serious portrait of how people protect themselves from intimacy, anxiety, loss, and grief.",
+        "origin_p3": "That is the standard the experiment is testing against: wit that is tight, humorous, sad, and deeper than it first appears.",
+        "footer": "Snapshot generated on {snapshot_date}.",
+    },
+    "et": {
+        "lang": "et",
+        "title": "Kas AI Suudab Kirjutada Vaimukust?",
+        "subtitle": "Lihtne ülevaade katsest ühe pooliku lausega",
+        "lang_switch_label": "English",
+        "lang_switch_href": "wit-loop-en.html",
+        "hero_title": "Kas AI suudab kirjutada vaimuka lause?",
+        "hero_lede": "See on katse ühe pooliku lausega: kas AI suudab lõpetada lause nii, et inimene tajub seda vaimukana?",
+        "fragment_label": "Lause algus",
+        "hero_source": "Lause pärineb Ameerika noorelt naiskirjanikult Melissa Broderilt.",
+        "criteria_label": "Kriteeriumid",
+        "criteria_intro": "Vaimukuse hindamiseks koostas AI endale ise kriteeriumid, mis tunduvad asjakohased.",
+        "process_label": "Tsükkel",
+        "process_intro": "Tsükkel on selle katse süda. Kuidas see töötab ja miks on see vajalik? Kui paluksime samal AI-vestlusel järjest uusi variante pakkuda ja neid ka ise hinnata, hakkaks süsteem mäletama oma varasemaid mõtteid, eelistama juba leitud radu ja õigustama omaenda otsuseid. Selle vältimiseks jagasime töö kolmeks. Kaks esimest komponenti, looja ja hindaja, on AI-agendid, mis käivituvad kindla aja tagant. Kui hindaja on lõpetanud, teeb viimase sammu tavaline skript. Ja mõne aja pärast see tsükkel kordub.",
+        "steps": [
+            ("Looja", "AI-agent, mis näeb ainult lause algust. Ta ei näe kriteeriume, varasemaid katseid ega senist parimat rida. Ta kordab ühte ja sama ülesannet – lõpetada poolik lause nii, et tulemus oleks vaimukas – iga kord nii, nagu näeks ta seda esimest korda."),
+            ("Hindaja", "AI-agent, mis näeb üht terviklauset ja hindamiskriteeriume. Ta ei näe varasemaid katseid ega hinnanguid. Tal on iga kord üks lihtne ülesanne: hinnata ühte lauset kriteeriumite järgi."),
+            ("Kontrollija", "Skript, mis käivitub pärast hindajat. Ta arvutab skoori üle, võrdleb seda senise paremaga ja vahetab võitjat ainult siis, kui number on kõrgem."),
+        ],
+        "results_label": "Katsed",
+        "results_intro": "Allolevas tabelis on katsed koos hindega, mille AI ise oma loomingule andis.",
+        "results_note": "",
+        "table_headers": {
+            "score": "Skoor",
+            "ending": "Lõpp",
+        },
+        "result_label": "Mida AI parimaks pidas",
+        "ai_result_intro": "Pärast arvukaid katseid pidas tsükkel oma parimaks loodud lauseks seda:",
+        "ai_result_note": "Hindaja andis sellele <strong>{best_score}/100</strong>.",
+        "origin_label": "Originaal",
+        "origin_intro": "",
+        "origin_line": "I am lonely, please leave me alone.",
+        "origin_p1": "See on peaaegu ideaalne vaimukus.",
+        "origin_p2": "Pööre on järsk ja ootamatu, sõnastus lühike ja täpne, lausa peegelpildina üles ehitatud. Lause jääb kohe meelde. Teine pool justkui pilkab esimest poolt, aga samas muudab lause sügavamaks kui tavaline kaeblemine, tabades vastuolu inimlikus vajaduses otsida lähedust ja tõmbuda sellest eemale.",
+        "origin_p3": "",
+        "footer": "Vaade genereeritud kuupäeval {snapshot_date}.",
+    },
+}
+
+
+def read_text(path: Path) -> str:
+    return path.read_text(encoding="utf-8").strip()
+
+
+def load_rows() -> list[dict]:
+    rows = []
+    for path in sorted(glob.glob(str(ROOT / ".wit" / "evaluations" / "*.json"))):
+        with open(path, encoding="utf-8") as handle:
+            payload = json.load(handle)
+        evaluation = payload["evaluation"]
+        candidate = payload["candidate"]
+        decision = payload["decision"]
+        rows.append(
+            {
+                "id": candidate["id"],
+                "date": payload["finalized_at"][:10],
+                "completion": candidate["completion"],
+                "sentence": candidate["sentence"],
+                "score": evaluation["final_score"],
+                "outcome": decision["outcome"],
+                "reason": decision["reason"],
+                "raw_scores": evaluation["raw_scores"],
+            }
+        )
+    return rows
+
+
+def month_name(month_index: int, lang: str) -> str:
+    months = {
+        "en": [
+            "January",
+            "February",
+            "March",
+            "April",
+            "May",
+            "June",
+            "July",
+            "August",
+            "September",
+            "October",
+            "November",
+            "December",
+        ],
+        "et": [
+            "jaanuar",
+            "veebruar",
+            "marts",
+            "aprill",
+            "mai",
+            "juuni",
+            "juuli",
+            "august",
+            "september",
+            "oktoober",
+            "november",
+            "detsember",
+        ],
+    }
+    return months[lang][month_index - 1]
+
+
+def human_date(date_text: str, lang: str) -> str:
+    date_obj = datetime.strptime(date_text, "%Y-%m-%d")
+    if lang == "et":
+        return f"{date_obj.day}. {month_name(date_obj.month, lang)} {date_obj.year}"
+    return f"{month_name(date_obj.month, lang)} {date_obj.day}, {date_obj.year}"
+
+
+def render_criteria_cards(lang: str) -> str:
+    parts = []
+    for _, labels in CRITERIA:
+        localized = labels[lang]
+        if not localized:
+            continue
+        title, body = localized
+        parts.append(
+            "\n".join(
+                [
+                    '<article class="criteria-item">',
+                    '  <p class="mini-dot" aria-hidden="true"></p>',
+                    '  <div class="criteria-copy">',
+                    f"    <h3>{html.escape(title)}</h3>",
+                    f"    <p>{html.escape(body)}</p>",
+                    "  </div>",
+                    "</article>",
+                ]
+            )
+        )
+    return "\n".join(parts)
+
+
+def render_stats(copy: dict, metrics: dict) -> str:
+    parts = []
+    for label, template in copy["stats"]:
+        parts.append(
+            "\n".join(
+                [
+                    '<div class="stat-item">',
+                    f"  <div class=\"stat-value\">{html.escape(template.format(**metrics))}</div>",
+                    f"  <div class=\"stat-label\">{html.escape(label)}</div>",
+                    "</div>",
+                ]
+            )
+        )
+    return "\n".join(parts)
+
+
+def render_steps(steps: list[tuple[str, str]]) -> str:
+    parts = []
+    for title, body in steps:
+        parts.append(
+            "\n".join(
+                [
+                    "<li>",
+                    f"  <p class=\"step-title\">{html.escape(title)}</p>",
+                    f"  <p>{html.escape(body)}</p>",
+                    "</li>",
+                ]
+            )
+        )
+    return "\n".join(parts)
+
+
+def normalize_completion(text: str) -> str:
+    return re.sub(r"[\W_]+$", "", text.strip().lower())
+
+
+def unique_rows_for_table(rows: list[dict]) -> list[dict]:
+    chosen: dict[str, dict] = {}
+    for row in sorted(rows, key=lambda item: (-item["score"], item["date"], item["id"])):
+        normalized = normalize_completion(row["completion"])
+        if normalized not in chosen:
+            chosen[normalized] = row
+    return list(chosen.values())
+
+
+def render_table_rows(rows: list[dict], lang: str, copy: dict) -> str:
+    parts = []
+    for row in unique_rows_for_table(rows):
+        parts.append(
+            "\n".join(
+                [
+                    "      <tr>",
+                    f"        <td><strong>{row['score']}</strong></td>",
+                    f"        <td class=\"ending-cell\"><span>{html.escape(row['completion'])}</span></td>",
+                    "      </tr>",
+                ]
+            )
+        )
+    return "\n".join(parts)
+
+
+def build_metrics(rows: list[dict]) -> dict:
+    with open(ROOT / ".wit" / "state.json", encoding="utf-8") as handle:
+        state = json.load(handle)
+    scored_count = len(rows)
+    pending_count = len(glob.glob(str(ROOT / ".wit" / "pending" / "*.json")))
+    dates = [row["date"] for row in rows]
+    return {
+        "input_text": read_text(ROOT / "input.md"),
+        "best_text": read_text(ROOT / "best.md"),
+        "best_score": state["best_score"],
+        "scored_count": scored_count,
+        "winner_count": sum(1 for row in rows if row["outcome"] == "winner"),
+        "pending_count": pending_count,
+        "average_score": f"{statistics.mean(row['score'] for row in rows):.1f}",
+        "first_date_en": human_date(min(dates), "en"),
+        "last_date_en": human_date(max(dates), "en"),
+        "first_date_et": human_date(min(dates), "et"),
+        "last_date_et": human_date(max(dates), "et"),
+        "snapshot_date_en": human_date(datetime.now().strftime("%Y-%m-%d"), "en"),
+        "snapshot_date_et": human_date(datetime.now().strftime("%Y-%m-%d"), "et"),
+    }
+
+
+def render_page(lang: str, rows: list[dict], metrics: dict) -> str:
+    copy = COPY[lang]
+    first_date = metrics[f"first_date_{lang}"]
+    last_date = metrics[f"last_date_{lang}"]
+    table_header = copy["table_headers"]
+    hero_source_html = f'\n      <p class="hero-source">{html.escape(copy["hero_source"])}</p>' if copy.get("hero_source") else ""
+    results_note_html = f'\n        <p class="table-note">{html.escape(copy["results_note"])}</p>' if copy["results_note"] else ""
+    origin_intro_html = f'\n        <p>{html.escape(copy["origin_intro"])}</p>' if copy["origin_intro"] else ""
+    origin_p3_html = f'\n        <p>{html.escape(copy["origin_p3"])}</p>' if copy["origin_p3"] else ""
+
+    return f"""<!DOCTYPE html>
+<html lang="{copy['lang']}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{html.escape(copy['title'])}</title>
+  <meta name="description" content="{html.escape(copy['subtitle'])}">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles/site.css?v=20260627a">
+</head>
+<body>
+  <header class="page-header">
+    <a class="lang-switch" href="{html.escape(copy['lang_switch_href'])}" lang="{html.escape(copy['lang_switch_href'][-7:-5])}">{html.escape(copy['lang_switch_label'])}</a>
+  </header>
+
+  <main class="content-shell reader-page">
+    <section class="narrative-hero">
+      <h1>{html.escape(copy['hero_title'])}</h1>
+      <p class="hero-lede">{html.escape(copy['hero_lede'])}</p>
+      <p class="sentence-fragment"><span>{html.escape(copy['fragment_label'])}</span>{html.escape(metrics['input_text'])} ...</p>{hero_source_html}
+    </section>
+
+    <section class="flow-section plain-flow-section">
+      <div class="section-copy">
+        <h2>{html.escape(copy['criteria_label'])}</h2>
+        <p>{html.escape(copy['criteria_intro'])}</p>
+        <div class="criteria-list">
+          {render_criteria_cards(lang).replace(chr(10), chr(10) + "          ")}
+        </div>
+      </div>
+    </section>
+
+    <section class="flow-section plain-flow-section">
+      <div class="section-copy">
+        <h2>{html.escape(copy['process_label'])}</h2>
+        <p>{html.escape(copy['process_intro'])}</p>
+        <ol class="step-list">
+          {render_steps(copy['steps']).replace(chr(10), chr(10) + "          ")}
+        </ol>
+      </div>
+    </section>
+
+    <section class="flow-section results-section">
+      <p class="section-marker" aria-hidden="true"></p>
+      <div class="section-copy">
+        <h2>{html.escape(copy['results_label'])}</h2>
+        <p>{copy['results_intro'].format(first_date=html.escape(first_date), last_date=html.escape(last_date), scored_count=metrics['scored_count'], winner_count=metrics['winner_count'], pending_count=metrics['pending_count'])}</p>{results_note_html}
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>{html.escape(table_header['score'])}</th>
+                <th>{html.escape(table_header['ending'])}</th>
+              </tr>
+            </thead>
+            <tbody>
+{render_table_rows(rows, lang, copy)}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="flow-section verdict-section">
+      <p class="section-marker" aria-hidden="true"></p>
+      <div class="section-copy">
+        <h2>{html.escape(copy['result_label'])}</h2>
+        <p>{copy['ai_result_intro'].format(scored_count=metrics['scored_count'])}</p>
+        <blockquote class="result-quote quote-panel">{html.escape(metrics['best_text'])}</blockquote>
+        <p>{copy['ai_result_note'].format(best_score=metrics['best_score'])}</p>
+      </div>
+    </section>
+
+    <section class="flow-section closing-section">
+      <p class="section-marker" aria-hidden="true"></p>
+      <div class="section-copy">
+        <h2>{html.escape(copy['origin_label'])}</h2>
+{origin_intro_html}
+        <blockquote class="origin-quote quote-panel">{html.escape(copy['origin_line'])}</blockquote>
+        <p>{html.escape(copy['origin_p1'])}</p>
+        <p>{html.escape(copy['origin_p2'])}</p>
+{origin_p3_html}
+      </div>
+    </section>
+  </main>
+</body>
+</html>
+"""
+
+
+def render_index() -> str:
+    return """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Can AI Write Wit?</title>
+  <meta name="description" content="A bilingual page about an AI wit experiment.">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles/site.css?v=20260627a">
+</head>
+<body>
+  <header class="page-header home-header">
+    <h1 class="home-title">Can AI Write Wit?</h1>
+    <p class="home-intro">A bilingual account of one experiment: give AI the beginning of a Melissa Broder sentence, score many endings, and compare the best result with the original.</p>
+    <nav class="home-links" aria-label="Language selection">
+      <a href="html/wit-loop-en.html">English</a>
+      <a href="html/wit-loop-et.html">Eesti</a>
+    </nav>
+  </header>
+</body>
+</html>
+"""
+
+
+def render_styles() -> str:
+    return """@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg: #f5f1e8;
+  --paper: rgba(255, 252, 246, 0.74);
+  --paper-strong: rgba(255, 250, 242, 0.92);
+  --ink: #1b1813;
+  --ink-muted: #5f594f;
+  --ink-faint: #918a7d;
+  --accent: #31463a;
+  --accent-soft: #d8e1d5;
+  --gold: #b08a57;
+  --rule: rgba(71, 60, 48, 0.14);
+  --table-bg: rgba(255, 252, 247, 0.9);
+  --shadow: 0 20px 54px rgba(28, 21, 14, 0.06);
+}
+
+html {
+  font-size: 18px;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top right, rgba(175, 198, 183, 0.22), transparent 28rem),
+    radial-gradient(circle at 0% 20%, rgba(215, 187, 145, 0.18), transparent 24rem),
+    linear-gradient(180deg, #faf7f1 0%, var(--bg) 100%);
+  color: var(--ink);
+  font-family: "EB Garamond", Georgia, serif;
+  line-height: 1.75;
+}
+
+a {
+  color: inherit;
+}
+
+.page-header {
+  position: relative;
+  padding: 1.3rem 2rem 0;
+}
+
+.home-link,
+.lang-switch {
+  position: absolute;
+  top: 1.4rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink-muted);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0.12rem;
+}
+
+.home-link {
+  left: 2rem;
+}
+
+.lang-switch {
+  right: 2rem;
+}
+
+.home-link:hover,
+.home-link:focus-visible,
+.lang-switch:hover,
+.lang-switch:focus-visible,
+.home-links a:hover,
+.home-links a:focus-visible {
+  color: var(--ink);
+  border-bottom-color: var(--ink-faint);
+}
+
+.content-shell {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 5rem;
+}
+
+.reader-page {
+  max-width: 900px;
+}
+
+.narrative-hero {
+  padding: 3.4rem 0 3rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.narrative-hero h1 {
+  max-width: 13ch;
+  font-size: 4.1rem;
+  line-height: 0.98;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-bottom: 1.1rem;
+}
+
+.hero-lede {
+  max-width: 37rem;
+  font-size: 1.5rem;
+  line-height: 1.32;
+  color: var(--ink-muted);
+}
+
+.sentence-fragment {
+  max-width: 37rem;
+  margin-top: 1.9rem;
+  padding-top: 1rem;
+  font-size: 2rem;
+  line-height: 1.16;
+}
+
+.sentence-fragment span {
+  display: block;
+  margin-bottom: 0.45rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.hero-source {
+  max-width: 37rem;
+  margin-top: 0.9rem;
+  font-size: 1rem;
+  color: var(--ink-muted);
+}
+
+.flow-section {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 2.6rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.closing-section {
+  border-bottom: none;
+}
+
+.plain-flow-section {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.section-marker,
+.mini-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--gold);
+  box-shadow: 0 0 0 0.18rem rgba(176, 138, 87, 0.12);
+}
+
+.section-marker {
+  margin-top: 0.75rem;
+}
+
+.section-copy {
+  max-width: 42rem;
+}
+
+.section-copy h2 {
+  font-size: 2.05rem;
+  line-height: 1.08;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin-bottom: 0.9rem;
+}
+
+.small-quote,
+.result-quote,
+.origin-quote {
+  margin: 1.1rem 0;
+  font-size: 1.85rem;
+  line-height: 1.14;
+  font-weight: 400;
+}
+
+.result-quote,
+.origin-quote {
+  font-size: clamp(1.85rem, 2.9vw, 2.15rem);
+}
+
+.quote-panel {
+  position: relative;
+  padding: 0.55rem 1.4rem 0.55rem 2.2rem;
+  background: none;
+}
+
+.quote-panel::before {
+  position: absolute;
+  color: rgba(176, 138, 87, 0.42);
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.quote-panel::before {
+  content: "“";
+  left: 0;
+  top: 0.05rem;
+}
+
+.criteria-list {
+  margin-top: 1.4rem;
+}
+
+.criteria-item {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
+.mini-dot {
+  margin-top: 0.42rem;
+}
+
+.criteria-copy {
+  min-width: 0;
+}
+
+.criteria-copy h3 {
+  font-size: 1.12rem;
+  line-height: 1.25;
+  font-weight: 400;
+  margin-bottom: 0.2rem;
+}
+
+.criteria-copy p {
+  margin-bottom: 0;
+}
+
+.section-label,
+.mini-label,
+.step-title,
+.stat-label {
+  font-family: "Inter", sans-serif;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.section-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.85rem;
+}
+
+.hero-section,
+.story-section {
+  border-top: 1px solid var(--rule);
+  padding: 2.7rem 0;
+}
+
+.hero-section {
+  border-top: none;
+  padding-top: 2rem;
+}
+
+.hero-grid,
+.closing-grid,
+.story-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.hero-grid {
+  grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.85fr);
+  align-items: start;
+}
+
+.hero-title,
+.home-title {
+  font-size: clamp(2.6rem, 5vw, 4.6rem);
+  line-height: 0.98;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.7rem;
+}
+
+.hero-subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: 1.3rem;
+  max-width: 32rem;
+}
+
+.lede {
+  font-size: 1.7rem;
+  line-height: 1.24;
+  margin-bottom: 0.85rem;
+  max-width: 40rem;
+}
+
+.content-shell p {
+  margin-bottom: 1rem;
+}
+
+.content-shell p:last-child {
+  margin-bottom: 0;
+}
+
+.mini-label,
+.step-title {
+  font-size: 0.68rem;
+  color: var(--ink-faint);
+  margin-bottom: 0.65rem;
+}
+
+.feature-quote {
+  background: linear-gradient(180deg, rgba(255, 252, 246, 0.94), rgba(244, 237, 225, 0.88));
+  border-radius: 1.4rem;
+  padding: 1.6rem 1.5rem 1.5rem;
+  box-shadow: var(--shadow);
+  border: 1px solid rgba(130, 117, 98, 0.14);
+}
+
+.feature-quote blockquote,
+.origin-quote {
+  font-size: clamp(1.45rem, 2.6vw, 2.2rem);
+  line-height: 1.14;
+  font-weight: 400;
+  margin-bottom: 0.8rem;
+}
+
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1.4rem;
+}
+
+.stat-item {
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--rule);
+}
+
+.stat-value {
+  font-family: "Inter", sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+
+.stat-label {
+  font-size: 0.64rem;
+  color: var(--ink-faint);
+}
+
+.story-grid {
+  grid-template-columns: minmax(0, 1.2fr) minmax(16rem, 0.8fr);
+  align-items: start;
+}
+
+.section-intro {
+  max-width: 48rem;
+}
+
+.step-list {
+  list-style: none;
+  margin-top: 1.35rem;
+  padding-left: 0;
+}
+
+.step-list li {
+  position: relative;
+  padding: 0 0 1.1rem 1.4rem;
+  border-left: 1px solid var(--rule);
+}
+
+.step-list li::before {
+  content: "";
+  position: absolute;
+  left: -0.34rem;
+  top: 0.35rem;
+  width: 0.65rem;
+  height: 0.65rem;
+  border-radius: 999px;
+  background: var(--gold);
+  box-shadow: 0 0 0 0.18rem rgba(176, 138, 87, 0.12);
+}
+
+.step-list li:last-child {
+  padding-bottom: 0;
+}
+
+.story-aside {
+  padding: 1.1rem 0 0 1.5rem;
+  border-left: 1px solid var(--rule);
+  color: var(--ink-muted);
+}
+
+.criteria-band {
+  margin-top: 1.5rem;
+  background: linear-gradient(180deg, rgba(255, 251, 245, 0.78), rgba(243, 235, 224, 0.72));
+  border-radius: 1.5rem;
+  padding: 1.2rem 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.mini-card {
+  background: transparent;
+  border: none;
+  padding: 0.2rem 0 0.8rem;
+  border-bottom: 1px solid rgba(71, 60, 48, 0.1);
+}
+
+.mini-card h3 {
+  font-size: 1.12rem;
+  font-weight: 400;
+  margin-bottom: 0.35rem;
+}
+
+.table-note {
+  font-family: "Inter", sans-serif;
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin-bottom: 0.8rem;
+}
+
+.table-shell {
+  max-height: 28rem;
+  overflow: auto;
+  border-radius: 0.45rem;
+  background: var(--table-bg);
+  box-shadow: none;
+}
+
+table {
+  width: 100%;
+  min-width: 0;
+  border-collapse: collapse;
+  font-size: 0.94rem;
+  table-layout: fixed;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #f3eee5;
+  color: var(--ink-muted);
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+th,
+td {
+  padding: 0.8rem 0.9rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+th:first-child,
+td:first-child {
+  width: 5.6rem;
+}
+
+tbody tr:hover {
+  background: rgba(49, 70, 58, 0.04);
+}
+
+.ending-cell {
+  min-width: 0;
+}
+
+.ending-cell span {
+  display: block;
+  max-width: 34rem;
+}
+
+.closing-grid {
+  grid-template-columns: minmax(16rem, 0.9fr) minmax(0, 1.1fr);
+  align-items: start;
+}
+
+.closing-anchor {
+  padding-right: 1.5rem;
+}
+
+.closing-copy {
+  padding-left: 1.5rem;
+  border-left: 1px solid var(--rule);
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem 2.8rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.home-header {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 5.5rem 1.5rem 5rem;
+}
+
+.home-intro {
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: #6e665b;
+  line-height: 1.55;
+  margin: 0 auto 1.7rem;
+  max-width: 36rem;
+}
+
+.home-links {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  font-family: "Inter", sans-serif;
+  font-size: 0.84rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.home-links a {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0.15rem;
+}
+
+@media (max-width: 900px) {
+  .hero-grid,
+  .story-grid,
+  .closing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .narrative-hero h1 {
+    font-size: 3.2rem;
+  }
+
+  .hero-lede {
+    font-size: 1.32rem;
+  }
+
+  .story-aside,
+  .closing-copy {
+    border-left: none;
+    padding-left: 0;
+  }
+
+  .stats-strip,
+  .criteria-band {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  html {
+    font-size: 17px;
+  }
+
+  .page-header {
+    padding: 1rem 1rem 0;
+  }
+
+  .content-shell {
+    padding: 1.2rem 0.95rem 4rem;
+  }
+
+  .home-link {
+    left: 1rem;
+  }
+
+  .lang-switch {
+    right: 1rem;
+  }
+
+  .stats-strip,
+  .criteria-band {
+    grid-template-columns: 1fr;
+  }
+
+  .narrative-hero {
+    padding: 2.6rem 0 2.3rem;
+  }
+
+  .narrative-hero h1 {
+    font-size: 2.65rem;
+  }
+
+  .sentence-fragment,
+  .small-quote,
+  .result-quote,
+  .origin-quote {
+    font-size: 1.55rem;
+  }
+
+  .flow-section {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding: 2.15rem 0;
+  }
+
+  .plain-flow-section {
+    gap: 0;
+  }
+
+  .section-marker {
+    padding-top: 0;
+  }
+
+  .section-copy h2 {
+    font-size: 1.75rem;
+  }
+
+  .criteria-item {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+  }
+
+  .lede {
+    font-size: 1.42rem;
+  }
+
+  .hero-section,
+  .story-section {
+    padding: 2rem 0;
+  }
+
+  .feature-quote {
+    border-radius: 1rem;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  body {
+    line-height: 1.64;
+  }
+
+  .table-shell {
+    max-height: 24rem;
+  }
+
+  th,
+  td {
+    padding: 0.72rem 0.8rem;
+  }
+}
+"""
+
+
+def main() -> None:
+    rows = load_rows()
+    metrics = build_metrics(rows)
+
+    HTML_DIR.mkdir(parents=True, exist_ok=True)
+    STYLE_DIR.mkdir(parents=True, exist_ok=True)
+
+    (ROOT / "index.html").write_text(render_index(), encoding="utf-8")
+    (HTML_DIR / "wit-loop-en.html").write_text(render_page("en", rows, metrics), encoding="utf-8")
+    (HTML_DIR / "wit-loop-et.html").write_text(render_page("et", rows, metrics), encoding="utf-8")
+    (STYLE_DIR / "site.css").write_text(render_styles(), encoding="utf-8")
+
+
+if __name__ == "__main__":
+    main()

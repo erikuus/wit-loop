@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "id": "20260621T230057791417Z-f270084f",
+    "input": "i’m lonely, please",
+    "completion": "text me something so unhinged my inner monologue has competition.",
+    "sentence": "i’m lonely, please text me something so unhinged my inner monologue has competition."
+  },
+  "evaluation": {
+    "candidate_id": "20260621T230057791417Z-f270084f",
+    "criteria_sha256": "40b3e6d4e9df841df5105e0279e32f7b249150048266a406669013e893dbab4a",
+    "raw_scores": {
+      "conceptual_reversal_and_logic": 2.5,
+      "precision_of_the_pivot": 3.5,
+      "compression_and_force": 2.5,
+      "quotable_shape": 3.0,
+      "originality_without_strain": 3.0,
+      "human_truth_carried_by_wit": 3.0,
+      "elegance": 2.0
+    },
+    "final_score": 57,
+    "rationale": "A clear idea lands in \"has competition,\" which neatly reframes loneliness as being crowded by one’s own mind, but the turn is more clever observation than sharp reversal. The pivot is fairly exact and recognizable, though the phrasing is somewhat long and the slangy setup keeps it from feeling especially compressed or elegant."
+  },
+  "decision": {
+    "outcome": "loser",
+    "reason": "Scored 57/100, below the incumbent's 80/100.",
+    "incumbent_before": {
+      "candidate_id": "20260621T130152595401Z-b98be9d7",
+      "score": 80,
+      "sentence": "i’m lonely, please put me in a group chat so I can be ignored at scale"
+    }
+  },
+  "finalized_at": "2026-06-21T23:16:16+00:00"
+}

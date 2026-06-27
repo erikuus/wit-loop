@@ -1,0 +1,8 @@
+- banner [ref=e2]:
+  - heading "Wit Loop" [level=1] [ref=e3]
+  - paragraph [ref=e4]: A bilingual editorial page about a blind loop that keeps trying to improve one witty sentence ending.
+  - navigation "Language selection" [ref=e5]:
+    - link "English" [ref=e6] [cursor=pointer]:
+      - /url: html/wit-loop-en.html
+    - link "Eesti" [ref=e7] [cursor=pointer]:
+      - /url: html/wit-loop-et.html

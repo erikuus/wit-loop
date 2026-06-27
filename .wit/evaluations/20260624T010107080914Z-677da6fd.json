@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "id": "20260624T010107080914Z-677da6fd",
+    "input": "i’m lonely, please",
+    "completion": "lower your standards; even your echo is ghosting you.",
+    "sentence": "i’m lonely, please lower your standards; even your echo is ghosting you."
+  },
+  "evaluation": {
+    "candidate_id": "20260624T010107080914Z-677da6fd",
+    "criteria_sha256": "40b3e6d4e9df841df5105e0279e32f7b249150048266a406669013e893dbab4a",
+    "raw_scores": {
+      "conceptual_reversal_and_logic": 2.0,
+      "precision_of_the_pivot": 2.5,
+      "compression_and_force": 3.0,
+      "quotable_shape": 2.0,
+      "originality_without_strain": 3.0,
+      "human_truth_carried_by_wit": 2.0,
+      "elegance": 1.5
+    },
+    "final_score": 47,
+    "rationale": "The self-deprecating pivot has some bite and the echo image is fresh, but the pronoun shift and stacked turns muddy the logic, which keeps the line from feeling fully clean or quotable."
+  },
+  "decision": {
+    "outcome": "loser",
+    "reason": "Scored 47/100, below the incumbent's 80/100.",
+    "incumbent_before": {
+      "candidate_id": "20260621T130152595401Z-b98be9d7",
+      "score": 80,
+      "sentence": "i’m lonely, please put me in a group chat so I can be ignored at scale"
+    }
+  },
+  "finalized_at": "2026-06-24T02:17:48+00:00"
+}

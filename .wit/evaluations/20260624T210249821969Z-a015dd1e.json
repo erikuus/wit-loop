@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "id": "20260624T210249821969Z-a015dd1e",
+    "input": "i’m lonely, please",
+    "completion": "send a meme before I start narrating my own life like a BBC wildlife special.",
+    "sentence": "i’m lonely, please send a meme before I start narrating my own life like a BBC wildlife special."
+  },
+  "evaluation": {
+    "candidate_id": "20260624T210249821969Z-a015dd1e",
+    "criteria_sha256": "40b3e6d4e9df841df5105e0279e32f7b249150048266a406669013e893dbab4a",
+    "raw_scores": {
+      "conceptual_reversal_and_logic": 2.5,
+      "precision_of_the_pivot": 3.5,
+      "compression_and_force": 2.0,
+      "quotable_shape": 2.5,
+      "originality_without_strain": 3.0,
+      "human_truth_carried_by_wit": 3.0,
+      "elegance": 2.5
+    },
+    "final_score": 55,
+    "rationale": "The wildlife-documentary image is fresh and specific, and it carries a real truth about lonely self-dramatization. But the turn feels more like comic embellishment than a clean conceptual reversal, and the sentence spends too many words to land with real snap."
+  },
+  "decision": {
+    "outcome": "loser",
+    "reason": "Scored 55/100, below the incumbent's 80/100.",
+    "incumbent_before": {
+      "candidate_id": "20260621T130152595401Z-b98be9d7",
+      "score": 80,
+      "sentence": "i’m lonely, please put me in a group chat so I can be ignored at scale"
+    }
+  },
+  "finalized_at": "2026-06-24T22:17:47+00:00"
+}

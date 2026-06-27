@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Can AI Write Wit?</title>
+  <meta name="description" content="A plain-language account of an experiment with one unfinished sentence">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/styles/site.css?v=20260627a">
+</head>
+<body>
+  <header class="page-header">
+    <a class="lang-switch" href="wit-loop-et.html" lang="et">Eesti</a>
+  </header>
+
+  <main class="content-shell reader-page">
+    <section class="narrative-hero">
+      <h1>Can AI write a witty ending?</h1>
+      <p class="hero-lede">This is a small experiment with one unfinished sentence. The question is whether an AI loop can produce an ending that people would recognize as wit, not just as a joke-shaped phrase.</p>
+      <p class="sentence-fragment"><span>Given beginning</span>i’m lonely, please ...</p>
+    </section>
+
+    <section class="flow-section plain-flow-section">
+      <div class="section-copy">
+        <h2>The Criteria</h2>
+        <p>The rubric in criteria.md treats wit as a sharp turn that is exact, compressed, memorable, fresh, truthful, and graceful. Each item is scored from 0 to 5, then weighted into a final score out of 100.</p>
+        <div class="criteria-list">
+          <article class="criteria-item">
+            <p class="mini-dot" aria-hidden="true"></p>
+            <div class="criteria-copy">
+              <h3>Reversal and logic</h3>
+              <p>The ending should turn the opening in a way that is surprising but still clean.</p>
+            </div>
+          </article>
+          <article class="criteria-item">
+            <p class="mini-dot" aria-hidden="true"></p>
+            <div class="criteria-copy">
+              <h3>Precision</h3>
+              <p>It should feel as if no word can be replaced without making the line less exact.</p>
+            </div>
+          </article>
+          <article class="criteria-item">
+            <p class="mini-dot" aria-hidden="true"></p>
+            <div class="criteria-copy">
+              <h3>Compression</h3>
+              <p>The line should do a lot with very few words.</p>
+            </div>
+          </article>
+          <article class="criteria-item">
+            <p class="mini-dot" aria-hidden="true"></p>
+            <div class="criteria-copy">
+              <h3>Quotable shape</h3>
+              <p>The full sentence should sound finished and memorable.</p>
+            </div>
+          </article>
+          <article class="criteria-item">
+            <p class="mini-dot" aria-hidden="true"></p>
+            <div class="criteria-copy">
+              <h3>Freshness</h3>
+              <p>The idea should feel new without looking desperate to be clever.</p>
+            </div>
+          </article>
+          <article class="criteria-item">
+            <p class="mini-dot" aria-hidden="true"></p>
+            <div class="criteria-copy">
+              <h3>Human truth</h3>
+              <p>The joke should reveal something real about people, not just juggle words.</p>
+            </div>
+          </article>
+          <article class="criteria-item">
+            <p class="mini-dot" aria-hidden="true"></p>
+            <div class="criteria-copy">
+              <h3>Double tone</h3>
+              <p>The line should feel funny and sad at once, playful on the surface and deeper underneath.</p>
+            </div>
+          </article>
+          <article class="criteria-item">
+            <p class="mini-dot" aria-hidden="true"></p>
+            <div class="criteria-copy">
+              <h3>Elegance</h3>
+              <p>The line should move lightly rather than feeling clumsy or overbuilt.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="flow-section plain-flow-section">
+      <div class="section-copy">
+        <h2>The Loop</h2>
+        <p>The loop is the heart of the experiment. If one conversation tried to invent, judge, and choose all at once, the model could easily flatter its own taste or drift into fuzzy self-justification. Here those jobs are split apart on purpose, so each step knows only what it truly needs.</p>
+        <ol class="step-list">
+          <li>
+            <p class="step-title">Creator</p>
+            <p>Sees only the sentence beginning. It does not see the rubric, earlier attempts, or the current winner.</p>
+          </li>
+          <li>
+            <p class="step-title">Judge</p>
+            <p>Sees one completed sentence and the criteria. It does not know what came before or what score it must beat.</p>
+          </li>
+          <li>
+            <p class="step-title">Finalizer</p>
+            <p>Deterministic code recalculates the score, compares it with the hidden incumbent, and updates the winner only if the number is higher.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="flow-section results-section">
+      <p class="section-marker" aria-hidden="true"></p>
+      <div class="section-copy">
+        <h2>The Attempts</h2>
+        <p>Between June 20, 2026 and June 26, 2026, the loop produced <strong>139</strong> scored attempts. <strong>3</strong> of them became the best-so-far line. <strong>1</strong> newer attempt is still waiting for a score.</p>
+        <p class="table-note">Best scoring attempts appear first.</p>
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>Score</th>
+                <th>Ending</th>
+              </tr>
+            </thead>
+            <tbody>
+      <tr>
+        <td><strong>81</strong></td>
+        <td class="ending-cell"><span>stop calling my two-person table &#x27;optimistic seating.&#x27;</span></td>
+      </tr>
+      <tr>
+        <td><strong>81</strong></td>
+        <td class="ending-cell"><span>put me in a group chat so I can be ignored at scale.</span></td>
+      </tr>
+      <tr>
+        <td><strong>78</strong></td>
+        <td class="ending-cell"><span>lower your standards before I raise my hopes.</span></td>
+      </tr>
+      <tr>
+        <td><strong>77</strong></td>
+        <td class="ending-cell"><span>put me in a group chat so I can be ignored by several people at once.</span></td>
+      </tr>
+      <tr>
+        <td><strong>76</strong></td>
+        <td class="ending-cell"><span>lower your standards and call it chemistry.</span></td>
+      </tr>
+      <tr>
+        <td><strong>76</strong></td>
+        <td class="ending-cell"><span>lower your standards and your drawbridge.</span></td>
+      </tr>
+      <tr>
+        <td><strong>75</strong></td>
+        <td class="ending-cell"><span>stop counting customer support chats as human connection.</span></td>
+      </tr>
+      <tr>
+        <td><strong>75</strong></td>
+        <td class="ending-cell"><span>invent a little mystery so my dating profile can call this &quot;seeing someone.&quot;</span></td>
+      </tr>
+      <tr>
+        <td><strong>74</strong></td>
+        <td class="ending-cell"><span>send someone with a good therapist and bad judgment</span></td>
+      </tr>
+      <tr>
+        <td><strong>74</strong></td>
+        <td class="ending-cell"><span>don&#x27;t confuse vulnerability with availability.</span></td>
+      </tr>
+      <tr>
+        <td><strong>74</strong></td>
+        <td class="ending-cell"><span>put me on hold with a telemarketer so I can feel wanted.</span></td>
+      </tr>
+      <tr>
+        <td><strong>73</strong></td>
+        <td class="ending-cell"><span>stop recommending “shareable plates” like I’m one charismatic text away from tapas.</span></td>
+      </tr>
+      <tr>
+        <td><strong>72</strong></td>
+        <td class="ending-cell"><span>mistake my red flags for festive bunting.</span></td>
+      </tr>
+      <tr>
+        <td><strong>72</strong></td>
+        <td class="ending-cell"><span>text me like you’re bored and accidentally honest.</span></td>
+      </tr>
+      <tr>
+        <td><strong>72</strong></td>
+        <td class="ending-cell"><span>start a rumor about me so at least I&#x27;m part of a conversation.</span></td>
+      </tr>
+      <tr>
+        <td><strong>72</strong></td>
+        <td class="ending-cell"><span>send me a captcha so someone finally asks if I&#x27;m human.</span></td>
+      </tr>
+      <tr>
+        <td><strong>72</strong></td>
+        <td class="ending-cell"><span>send a search party, not another self-care article.</span></td>
+      </tr>
+      <tr>
+        <td><strong>71</strong></td>
+        <td class="ending-cell"><span>stop asking me to verify I&#x27;m human and start proving someone else is.</span></td>
+      </tr>
+      <tr>
+        <td><strong>71</strong></td>
+        <td class="ending-cell"><span>start a rumor that I&#x27;m emotionally available</span></td>
+      </tr>
+      <tr>
+        <td><strong>71</strong></td>
+        <td class="ending-cell"><span>introduce me to your group chat; i miss being ignored by multiple people at once.</span></td>
+      </tr>
+      <tr>
+        <td><strong>71</strong></td>
+        <td class="ending-cell"><span>invent a typo so I can finally say someone texted me first.</span></td>
+      </tr>
+      <tr>
+        <td><strong>71</strong></td>
+        <td class="ending-cell"><span>lower your standards enough to count this as company.</span></td>
+      </tr>
+      <tr>
+        <td><strong>70</strong></td>
+        <td class="ending-cell"><span>teach my notifications to lie more convincingly.</span></td>
+      </tr>
+      <tr>
+        <td><strong>70</strong></td>
+        <td class="ending-cell"><span>text me back before I start giving my houseplants your personality.</span></td>
+      </tr>
+      <tr>
+        <td><strong>70</strong></td>
+        <td class="ending-cell"><span>start a rumor about me so people finally talk.</span></td>
+      </tr>
+      <tr>
+        <td><strong>70</strong></td>
+        <td class="ending-cell"><span>invent two more personalities so this counts as a group chat.</span></td>
+      </tr>
+      <tr>
+        <td><strong>70</strong></td>
+        <td class="ending-cell"><span>let the scam caller finish; I want to hear where things are going.</span></td>
+      </tr>
+      <tr>
+        <td><strong>70</strong></td>
+        <td class="ending-cell"><span>ruin my sleep schedule and call it chemistry.</span></td>
+      </tr>
+      <tr>
+        <td><strong>69</strong></td>
+        <td class="ending-cell"><span>tell me I&#x27;m mysterious instead of unemployed.</span></td>
+      </tr>
+      <tr>
+        <td><strong>69</strong></td>
+        <td class="ending-cell"><span>text me like a scammer who thinks I still have potential</span></td>
+      </tr>
+      <tr>
+        <td><strong>69</strong></td>
+        <td class="ending-cell"><span>misdial me; at this point even your pocket deserves a second chance.</span></td>
+      </tr>
+      <tr>
+        <td><strong>69</strong></td>
+        <td class="ending-cell"><span>put me in your group chat so I can finally be left on read by multiple people.</span></td>
+      </tr>
+      <tr>
+        <td><strong>69</strong></td>
+        <td class="ending-cell"><span>text me before I start calling spam numbers back.</span></td>
+      </tr>
+      <tr>
+        <td><strong>68</strong></td>
+        <td class="ending-cell"><span>send a typo so I can misread it as affection.</span></td>
+      </tr>
+      <tr>
+        <td><strong>68</strong></td>
+        <td class="ending-cell"><span>let me disappoint you in person.</span></td>
+      </tr>
+      <tr>
+        <td><strong>68</strong></td>
+        <td class="ending-cell"><span>stop calling it &quot;me time&quot;; at this point it&#x27;s witness protection.</span></td>
+      </tr>
+      <tr>
+        <td><strong>68</strong></td>
+        <td class="ending-cell"><span>bring a plus-one so I can feel rejected in stereo.</span></td>
+      </tr>
+      <tr>
+        <td><strong>68</strong></td>
+        <td class="ending-cell"><span>don&#x27;t make me your emotional support autocomplete.</span></td>
+      </tr>
+      <tr>
+        <td><strong>68</strong></td>
+        <td class="ending-cell"><span>invent a group chat where someone still ignores me.</span></td>
+      </tr>
+      <tr>
+        <td><strong>67</strong></td>
+        <td class="ending-cell"><span>date me before Netflix upgrades &quot;are you still watching?&quot; to a wellness check.</span></td>
+      </tr>
+      <tr>
+        <td><strong>67</strong></td>
+        <td class="ending-cell"><span>stop making the Roomba my most consistent relationship.</span></td>
+      </tr>
+      <tr>
+        <td><strong>67</strong></td>
+        <td class="ending-cell"><span>invent a typo so I can call it a meet-cute.</span></td>
+      </tr>
+      <tr>
+        <td><strong>67</strong></td>
+        <td class="ending-cell"><span>stop calling me &quot;independent&quot; like it&#x27;s a coupon code for dying alone.</span></td>
+      </tr>
+      <tr>
+        <td><strong>67</strong></td>
+        <td class="ending-cell"><span>mistake this cry for help for flirting.</span></td>
+      </tr>
+      <tr>
+        <td><strong>67</strong></td>
+        <td class="ending-cell"><span>tell my reflection to stop playing hard to get.</span></td>
+      </tr>
+      <tr>
+        <td><strong>67</strong></td>
+        <td class="ending-cell"><span>forward this to my group chat so I can get ignored at scale.</span></td>
+      </tr>
+      <tr>
+        <td><strong>67</strong></td>
+        <td class="ending-cell"><span>lower my standards before my self-esteem does it for me.</span></td>
+      </tr>
+      <tr>
+        <td><strong>66</strong></td>
+        <td class="ending-cell"><span>mistake my availability for emotional depth.</span></td>
+      </tr>
+      <tr>
+        <td><strong>66</strong></td>
+        <td class="ending-cell"><span>put me on speaker so your therapist can hear both sides.</span></td>
+      </tr>
+      <tr>
+        <td><strong>66</strong></td>
+        <td class="ending-cell"><span>text me back badly; even typos count as chemistry.</span></td>
+      </tr>
+      <tr>
+        <td><strong>66</strong></td>
+        <td class="ending-cell"><span>send a scammer with better conversational skills.</span></td>
+      </tr>
+      <tr>
+        <td><strong>66</strong></td>
+        <td class="ending-cell"><span>put the &quot;us&quot; in &quot;delusions.&quot;</span></td>
+      </tr>
+      <tr>
+        <td><strong>66</strong></td>
+        <td class="ending-cell"><span>text me like a scammer with a wrong number and stay for the plot.</span></td>
+      </tr>
+      <tr>
+        <td><strong>65</strong></td>
+        <td class="ending-cell"><span>ghost me in person so I can finally get the full experience.</span></td>
+      </tr>
+      <tr>
+        <td><strong>65</strong></td>
+        <td class="ending-cell"><span>send a scam text with a little more emotional availability.</span></td>
+      </tr>
+      <tr>
+        <td><strong>65</strong></td>
+        <td class="ending-cell"><span>stop mistaking your screen time report for a social life.</span></td>
+      </tr>
+      <tr>
+        <td><strong>65</strong></td>
+        <td class="ending-cell"><span>clap when I open the microwave so it feels like someone came home.</span></td>
+      </tr>
+      <tr>
+        <td><strong>65</strong></td>
+        <td class="ending-cell"><span>hold me like my screen time report does: with mounting concern.</span></td>
+      </tr>
+      <tr>
+        <td><strong>65</strong></td>
+        <td class="ending-cell"><span>lower your standards and come sit by me.</span></td>
+      </tr>
+      <tr>
+        <td><strong>65</strong></td>
+        <td class="ending-cell"><span>send a group chat invite so I can get ghosted by multiple people at once.</span></td>
+      </tr>
+      <tr>
+        <td><strong>65</strong></td>
+        <td class="ending-cell"><span>lower your standards until my personality counts.</span></td>
+      </tr>
+      <tr>
+        <td><strong>64</strong></td>
+        <td class="ending-cell"><span>send memes or a search party, whichever arrives first.</span></td>
+      </tr>
+      <tr>
+        <td><strong>64</strong></td>
+        <td class="ending-cell"><span>install me a personality before I start flirting with the loading spinner.</span></td>
+      </tr>
+      <tr>
+        <td><strong>64</strong></td>
+        <td class="ending-cell"><span>send a search party; even my echo stopped calling back.</span></td>
+      </tr>
+      <tr>
+        <td><strong>64</strong></td>
+        <td class="ending-cell"><span>leave a message after the existential beep.</span></td>
+      </tr>
+      <tr>
+        <td><strong>64</strong></td>
+        <td class="ending-cell"><span>lower your standards before I start flirting with customer support chatbots.</span></td>
+      </tr>
+      <tr>
+        <td><strong>64</strong></td>
+        <td class="ending-cell"><span>invent a reason my therapist would call this character development.</span></td>
+      </tr>
+      <tr>
+        <td><strong>64</strong></td>
+        <td class="ending-cell"><span>lower your standards before my personality does.</span></td>
+      </tr>
+      <tr>
+        <td><strong>64</strong></td>
+        <td class="ending-cell"><span>adopt me as your emergency contact.</span></td>
+      </tr>
+      <tr>
+        <td><strong>64</strong></td>
+        <td class="ending-cell"><span>put me on hold so I can feel wanted.</span></td>
+      </tr>
+      <tr>
+        <td><strong>64</strong></td>
+        <td class="ending-cell"><span>date me before my plants stage an intervention.</span></td>
+      </tr>
+      <tr>
+        <td><strong>63</strong></td>
+        <td class="ending-cell"><span>install me in a haunted house so at least something is always around.</span></td>
+      </tr>
+      <tr>
+        <td><strong>63</strong></td>
+        <td class="ending-cell"><span>put me on hold with customer service so a robot checks in on me every 30 seconds.</span></td>
+      </tr>
+      <tr>
+        <td><strong>63</strong></td>
+        <td class="ending-cell"><span>roast me in the comments so it feels like company</span></td>
+      </tr>
+      <tr>
+        <td><strong>62</strong></td>
+        <td class="ending-cell"><span>text me &quot;wrong number&quot; so i can pretend destiny tried.</span></td>
+      </tr>
+      <tr>
+        <td><strong>62</strong></td>
+        <td class="ending-cell"><span>invent a wrong number who believes in me.</span></td>
+      </tr>
+      <tr>
+        <td><strong>62</strong></td>
+        <td class="ending-cell"><span>send a group text so I can get rejected more efficiently.</span></td>
+      </tr>
+      <tr>
+        <td><strong>62</strong></td>
+        <td class="ending-cell"><span>reply before my self-esteem starts a podcast.</span></td>
+      </tr>
+      <tr>
+        <td><strong>62</strong></td>
+        <td class="ending-cell"><span>lower your standards and call it networking.</span></td>
+      </tr>
+      <tr>
+        <td><strong>62</strong></td>
+        <td class="ending-cell"><span>date me before my houseplants start charging rent.</span></td>
+      </tr>
+      <tr>
+        <td><strong>62</strong></td>
+        <td class="ending-cell"><span>text me back so my screen time can finally feel mutual.</span></td>
+      </tr>
+      <tr>
+        <td><strong>61</strong></td>
+        <td class="ending-cell"><span>stop making my group chat look like a museum exhibit.</span></td>
+      </tr>
+      <tr>
+        <td><strong>61</strong></td>
+        <td class="ending-cell"><span>update my privacy settings before I start flirting with the Duolingo owl.</span></td>
+      </tr>
+      <tr>
+        <td><strong>61</strong></td>
+        <td class="ending-cell"><span>clap when I microwave leftovers so it feels like I’m opening for someone.</span></td>
+      </tr>
+      <tr>
+        <td><strong>61</strong></td>
+        <td class="ending-cell"><span>send memes, not mixed signals.</span></td>
+      </tr>
+      <tr>
+        <td><strong>60</strong></td>
+        <td class="ending-cell"><span>send a meme before I start flirting with the Duolingo owl.</span></td>
+      </tr>
+      <tr>
+        <td><strong>60</strong></td>
+        <td class="ending-cell"><span>introduce me to your wi-fi; it connects faster than people do.</span></td>
+      </tr>
+      <tr>
+        <td><strong>60</strong></td>
+        <td class="ending-cell"><span>date me before Duolingo congratulates me for my longest conversation again.</span></td>
+      </tr>
+      <tr>
+        <td><strong>60</strong></td>
+        <td class="ending-cell"><span>flirt with me before my houseplants stage an intervention.</span></td>
+      </tr>
+      <tr>
+        <td><strong>60</strong></td>
+        <td class="ending-cell"><span>flirt with me before I start naming the houseplants after exes.</span></td>
+      </tr>
+      <tr>
+        <td><strong>60</strong></td>
+        <td class="ending-cell"><span>put me on hold with customer service so I can hear another human voice.</span></td>
+      </tr>
+      <tr>
+        <td><strong>60</strong></td>
+        <td class="ending-cell"><span>invent a second person before i start naming the houseplants after exes.</span></td>
+      </tr>
+      <tr>
+        <td><strong>59</strong></td>
+        <td class="ending-cell"><span>send memes before I start assigning personalities to kitchen appliances.</span></td>
+      </tr>
+      <tr>
+        <td><strong>59</strong></td>
+        <td class="ending-cell"><span>lower your standards and my text will feel like a meet-cute.</span></td>
+      </tr>
+      <tr>
+        <td><strong>59</strong></td>
+        <td class="ending-cell"><span>date me before i start giving my houseplants names and custody schedules.</span></td>
+      </tr>
+      <tr>
+        <td><strong>59</strong></td>
+        <td class="ending-cell"><span>hold my hand before I start giving names to my Wi-Fi bars.</span></td>
+      </tr>
+      <tr>
+        <td><strong>59</strong></td>
+        <td class="ending-cell"><span>don’t make me name the houseplants after exes again.</span></td>
+      </tr>
+      <tr>
+        <td><strong>58</strong></td>
+        <td class="ending-cell"><span>forward this to your FBI agent so somebody checks in.</span></td>
+      </tr>
+      <tr>
+        <td><strong>58</strong></td>
+        <td class="ending-cell"><span>teach my phone to autocorrect every name to “babe”</span></td>
+      </tr>
+      <tr>
+        <td><strong>57</strong></td>
+        <td class="ending-cell"><span>introduce me to your group chat so I can finally get left on read by a community.</span></td>
+      </tr>
+      <tr>
+        <td><strong>57</strong></td>
+        <td class="ending-cell"><span>respond before I start flirting with customer support again.</span></td>
+      </tr>
+      <tr>
+        <td><strong>57</strong></td>
+        <td class="ending-cell"><span>text me something so unhinged my inner monologue has competition.</span></td>
+      </tr>
+      <tr>
+        <td><strong>57</strong></td>
+        <td class="ending-cell"><span>send memes before i start naming the furniture after exes.</span></td>
+      </tr>
+      <tr>
+        <td><strong>57</strong></td>
+        <td class="ending-cell"><span>lower your standards a little faster.</span></td>
+      </tr>
+      <tr>
+        <td><strong>57</strong></td>
+        <td class="ending-cell"><span>date me before i start naming the houseplants after exes.</span></td>
+      </tr>
+      <tr>
+        <td><strong>57</strong></td>
+        <td class="ending-cell"><span>send a plus-one so I can stop telling restaurants my phone is my date.</span></td>
+      </tr>
+      <tr>
+        <td><strong>57</strong></td>
+        <td class="ending-cell"><span>send someone who treats &quot;you up?&quot; like a wedding vow.</span></td>
+      </tr>
+      <tr>
+        <td><strong>56</strong></td>
+        <td class="ending-cell"><span>set me up with your group chat; I can take a hint in stereo.</span></td>
+      </tr>
+      <tr>
+        <td><strong>56</strong></td>
+        <td class="ending-cell"><span>introduce me to someone who thinks &#x27;let&#x27;s overthink it&#x27; is a love language.</span></td>
+      </tr>
+      <tr>
+        <td><strong>56</strong></td>
+        <td class="ending-cell"><span>lower your standards until they make eye contact.</span></td>
+      </tr>
+      <tr>
+        <td><strong>55</strong></td>
+        <td class="ending-cell"><span>send a text before I start flirting with customer support again.</span></td>
+      </tr>
+      <tr>
+        <td><strong>55</strong></td>
+        <td class="ending-cell"><span>put me on hold with customer service so i can hear a human voice.</span></td>
+      </tr>
+      <tr>
+        <td><strong>55</strong></td>
+        <td class="ending-cell"><span>send a meme before I start narrating my own life like a BBC wildlife special.</span></td>
+      </tr>
+      <tr>
+        <td><strong>55</strong></td>
+        <td class="ending-cell"><span>reroute one of those &#x27;hot singles in your area&#x27; directly to my front door.</span></td>
+      </tr>
+      <tr>
+        <td><strong>55</strong></td>
+        <td class="ending-cell"><span>send someone before I start rating conversations with the microwave five stars.</span></td>
+      </tr>
+      <tr>
+        <td><strong>55</strong></td>
+        <td class="ending-cell"><span>lower your standards slowly; I’m trying to make a dramatic entrance.</span></td>
+      </tr>
+      <tr>
+        <td><strong>55</strong></td>
+        <td class="ending-cell"><span>send a calendar invite before my plants start giving dating advice.</span></td>
+      </tr>
+      <tr>
+        <td><strong>55</strong></td>
+        <td class="ending-cell"><span>send a software update for my love life; this version keeps crashing on startup.</span></td>
+      </tr>
+      <tr>
+        <td><strong>55</strong></td>
+        <td class="ending-cell"><span>set my relationship status to &#x27;buffering.&#x27;</span></td>
+      </tr>
+      <tr>
+        <td><strong>54</strong></td>
+        <td class="ending-cell"><span>text back, even if it’s just your two-factor code by accident.</span></td>
+      </tr>
+      <tr>
+        <td><strong>54</strong></td>
+        <td class="ending-cell"><span>leave your read receipts on so I can feel seen.</span></td>
+      </tr>
+      <tr>
+        <td><strong>54</strong></td>
+        <td class="ending-cell"><span>text me before I start flirting with the Duolingo owl again</span></td>
+      </tr>
+      <tr>
+        <td><strong>54</strong></td>
+        <td class="ending-cell"><span>send a plus-one for my thoughts.</span></td>
+      </tr>
+      <tr>
+        <td><strong>53</strong></td>
+        <td class="ending-cell"><span>lower your standards; I’m trying to become someone’s bad decision arc.</span></td>
+      </tr>
+      <tr>
+        <td><strong>53</strong></td>
+        <td class="ending-cell"><span>reinstall my social life before the free trial expires.</span></td>
+      </tr>
+      <tr>
+        <td><strong>53</strong></td>
+        <td class="ending-cell"><span>try turning me off and back on romantically.</span></td>
+      </tr>
+      <tr>
+        <td><strong>52</strong></td>
+        <td class="ending-cell"><span>send a carrier pigeon, a smoke signal, or literally any evidence I&#x27;m not hosting a one-person podcast.</span></td>
+      </tr>
+      <tr>
+        <td><strong>50</strong></td>
+        <td class="ending-cell"><span>be weird enough that my therapist gets new material.</span></td>
+      </tr>
+      <tr>
+        <td><strong>50</strong></td>
+        <td class="ending-cell"><span>lower your standards and come sit with me.</span></td>
+      </tr>
+      <tr>
+        <td><strong>50</strong></td>
+        <td class="ending-cell"><span>reboot the router between my heart and literally anyone.</span></td>
+      </tr>
+      <tr>
+        <td><strong>49</strong></td>
+        <td class="ending-cell"><span>send a push notification pretending someone misses me.</span></td>
+      </tr>
+      <tr>
+        <td><strong>49</strong></td>
+        <td class="ending-cell"><span>send a text before my houseplants start giving relationship advice.</span></td>
+      </tr>
+      <tr>
+        <td><strong>49</strong></td>
+        <td class="ending-cell"><span>text me a typo so I can mistake it for chemistry.</span></td>
+      </tr>
+      <tr>
+        <td><strong>48</strong></td>
+        <td class="ending-cell"><span>rotate my pizza so I can pretend it&#x27;s a social circle.</span></td>
+      </tr>
+      <tr>
+        <td><strong>47</strong></td>
+        <td class="ending-cell"><span>lower your standards; even your echo is ghosting you.</span></td>
+      </tr>
+      <tr>
+        <td><strong>46</strong></td>
+        <td class="ending-cell"><span>stop making my pizza delivery guy look like endgame.</span></td>
+      </tr>
+      <tr>
+        <td><strong>35</strong></td>
+        <td class="ending-cell"><span>unsubscribe from your situationship and try eye contact.</span></td>
+      </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="flow-section verdict-section">
+      <p class="section-marker" aria-hidden="true"></p>
+      <div class="section-copy">
+        <h2>What AI Chose</h2>
+        <p>So, after 139 scored attempts, the loop thought its best creation was:</p>
+        <blockquote class="result-quote quote-panel">i’m lonely, please stop calling my two-person table &#x27;optimistic seating.&#x27;</blockquote>
+        <p>The judge scored it <strong>81/100</strong>. That is strong, but it is not the same thing as canonical wit.</p>
+      </div>
+    </section>
+
+    <section class="flow-section closing-section">
+      <p class="section-marker" aria-hidden="true"></p>
+      <div class="section-copy">
+        <h2>The Original</h2>
+
+        <p>Melissa Broder&#x27;s original sentence is much better:</p>
+        <blockquote class="origin-quote quote-panel">I am lonely, please leave me alone.</blockquote>
+        <p>It is short, exact, and almost perfectly mirrored: the plea for company immediately becomes a demand for distance.</p>
+        <p>The turn is funny because it exposes a contradiction. It can sound like a joke about fashionable loneliness, and at the same time like a serious portrait of how people protect themselves from intimacy, anxiety, loss, and grief.</p>
+
+        <p>That is the standard the experiment is testing against: wit that is tight, humorous, sad, and deeper than it first appears.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

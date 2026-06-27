@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "id": "20260623T040234805222Z-5ecbcb51",
+    "input": "i’m lonely, please",
+    "completion": "reinstall my social life before the free trial expires.",
+    "sentence": "i’m lonely, please reinstall my social life before the free trial expires."
+  },
+  "evaluation": {
+    "candidate_id": "20260623T040234805222Z-5ecbcb51",
+    "criteria_sha256": "40b3e6d4e9df841df5105e0279e32f7b249150048266a406669013e893dbab4a",
+    "raw_scores": {
+      "conceptual_reversal_and_logic": 2.5,
+      "precision_of_the_pivot": 3.0,
+      "compression_and_force": 2.5,
+      "quotable_shape": 2.5,
+      "originality_without_strain": 3.0,
+      "human_truth_carried_by_wit": 2.5,
+      "elegance": 2.0
+    },
+    "final_score": 53,
+    "rationale": "The software-subscription metaphor gives the plea a clear comic turn, and \"free trial expires\" lands with some precision. But the logic is more overlay than revelation, the line runs a bit long, and the mixed tech framing keeps it from feeling especially quotable or elegant."
+  },
+  "decision": {
+    "outcome": "loser",
+    "reason": "Scored 53/100, below the incumbent's 80/100.",
+    "incumbent_before": {
+      "candidate_id": "20260621T130152595401Z-b98be9d7",
+      "score": 80,
+      "sentence": "i’m lonely, please put me in a group chat so I can be ignored at scale"
+    }
+  },
+  "finalized_at": "2026-06-23T05:17:41+00:00"
+}

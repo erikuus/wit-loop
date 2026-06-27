@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "id": "20260623T070104753257Z-9b25685a",
+    "input": "i’m lonely, please",
+    "completion": "clap when I open the microwave so it feels like someone came home.",
+    "sentence": "i’m lonely, please clap when I open the microwave so it feels like someone came home."
+  },
+  "evaluation": {
+    "candidate_id": "20260623T070104753257Z-9b25685a",
+    "criteria_sha256": "40b3e6d4e9df841df5105e0279e32f7b249150048266a406669013e893dbab4a",
+    "raw_scores": {
+      "conceptual_reversal_and_logic": 3.5,
+      "precision_of_the_pivot": 3.5,
+      "compression_and_force": 2.5,
+      "quotable_shape": 3.0,
+      "originality_without_strain": 3.5,
+      "human_truth_carried_by_wit": 3.5,
+      "elegance": 2.5
+    },
+    "final_score": 65,
+    "rationale": "The image is specific and the turn lands: loneliness is reframed as manufacturing the feeling of being welcomed home. The idea is fresh and humanly legible, but the sentence is somewhat long and more like a comic bit than a sharply quotable aphorism."
+  },
+  "decision": {
+    "outcome": "loser",
+    "reason": "Scored 65/100, below the incumbent's 80/100.",
+    "incumbent_before": {
+      "candidate_id": "20260621T130152595401Z-b98be9d7",
+      "score": 80,
+      "sentence": "i’m lonely, please put me in a group chat so I can be ignored at scale"
+    }
+  },
+  "finalized_at": "2026-06-23T08:17:54+00:00"
+}
