@@ -18,15 +18,16 @@
 
   <main class="content-shell reader-page">
     <section class="narrative-hero">
-      <h1>Can AI write a witty ending?</h1>
-      <p class="hero-lede">This is a small experiment with one unfinished sentence. The question is whether an AI loop can produce an ending that people would recognize as wit, not just as a joke-shaped phrase.</p>
+      <h1>Can AI write a witty sentence?</h1>
+      <p class="hero-lede">This is an experiment with one unfinished sentence: can AI complete it in a way that a person would recognize as wit?</p>
       <p class="sentence-fragment"><span>Given beginning</span>i’m lonely, please ...</p>
+      <p class="hero-source">The sentence comes from the American writer Melissa Broder.</p>
     </section>
 
     <section class="flow-section plain-flow-section">
       <div class="section-copy">
         <h2>The Criteria</h2>
-        <p>The rubric in criteria.md treats wit as a sharp turn that is exact, compressed, memorable, fresh, truthful, and graceful. Each item is scored from 0 to 5, then weighted into a final score out of 100.</p>
+        <p>To judge wit, the AI wrote its own criteria. They seem surprisingly sensible.</p>
         <div class="criteria-list">
           <article class="criteria-item">
             <p class="mini-dot" aria-hidden="true"></p>
@@ -59,13 +60,6 @@
           <article class="criteria-item">
             <p class="mini-dot" aria-hidden="true"></p>
             <div class="criteria-copy">
-              <h3>Freshness</h3>
-              <p>The idea should feel new without looking desperate to be clever.</p>
-            </div>
-          </article>
-          <article class="criteria-item">
-            <p class="mini-dot" aria-hidden="true"></p>
-            <div class="criteria-copy">
               <h3>Human truth</h3>
               <p>The joke should reveal something real about people, not just juggle words.</p>
             </div>
@@ -91,19 +85,19 @@
     <section class="flow-section plain-flow-section">
       <div class="section-copy">
         <h2>The Loop</h2>
-        <p>The loop is the heart of the experiment. If one conversation tried to invent, judge, and choose all at once, the model could easily flatter its own taste or drift into fuzzy self-justification. Here those jobs are split apart on purpose, so each step knows only what it truly needs.</p>
+        <p>The loop is the heart of this experiment. How does it work, and why is it necessary? If we asked the same AI conversation to keep proposing new versions and also judge them, it would start remembering its own earlier thoughts, preferring paths it had already taken, and defending its own decisions. To avoid that, we split the work into three parts. The first two components, the creator and the judge, are AI agents that start at fixed intervals. When the judge is done, an ordinary script performs the final step. Then, after some time, the cycle repeats.</p>
         <ol class="step-list">
           <li>
             <p class="step-title">Creator</p>
-            <p>Sees only the sentence beginning. It does not see the rubric, earlier attempts, or the current winner.</p>
+            <p>An AI agent that sees only the beginning of the sentence. It does not see the criteria, earlier attempts, or the current best line. It repeats the same task each time — complete the unfinished sentence so the result is witty — as if seeing it for the first time.</p>
           </li>
           <li>
             <p class="step-title">Judge</p>
-            <p>Sees one completed sentence and the criteria. It does not know what came before or what score it must beat.</p>
+            <p>An AI agent that sees one complete sentence and the judging criteria. It does not see earlier attempts or earlier scores. Each time it has one simple task: judge one sentence by the criteria.</p>
           </li>
           <li>
-            <p class="step-title">Finalizer</p>
-            <p>Deterministic code recalculates the score, compares it with the hidden incumbent, and updates the winner only if the number is higher.</p>
+            <p class="step-title">Checker</p>
+            <p>A script that runs after the judge. It recalculates the score, compares it with the current best one, and replaces the winner only if the number is higher.</p>
           </li>
         </ol>
       </div>
@@ -113,8 +107,7 @@
       <p class="section-marker" aria-hidden="true"></p>
       <div class="section-copy">
         <h2>The Attempts</h2>
-        <p>Between June 20, 2026 and June 26, 2026, the loop produced <strong>139</strong> scored attempts. <strong>3</strong> of them became the best-so-far line. <strong>1</strong> newer attempt is still waiting for a score.</p>
-        <p class="table-note">Best scoring attempts appear first.</p>
+        <p>Below is a table of the attempts, together with the score the AI gave its own writing.</p>
         <div class="table-shell">
           <table>
             <thead>
@@ -681,10 +674,10 @@
     <section class="flow-section verdict-section">
       <p class="section-marker" aria-hidden="true"></p>
       <div class="section-copy">
-        <h2>What AI Chose</h2>
-        <p>So, after 139 scored attempts, the loop thought its best creation was:</p>
+        <h2>What AI Thought Was Best</h2>
+        <p>After many attempts, the loop considered this its best sentence:</p>
         <blockquote class="result-quote quote-panel">i’m lonely, please stop calling my two-person table &#x27;optimistic seating.&#x27;</blockquote>
-        <p>The judge scored it <strong>81/100</strong>. That is strong, but it is not the same thing as canonical wit.</p>
+        <p>The judge gave it <strong>81/100</strong>.</p>
       </div>
     </section>
 
@@ -693,12 +686,10 @@
       <div class="section-copy">
         <h2>The Original</h2>
 
-        <p>Melissa Broder&#x27;s original sentence is much better:</p>
         <blockquote class="origin-quote quote-panel">I am lonely, please leave me alone.</blockquote>
-        <p>It is short, exact, and almost perfectly mirrored: the plea for company immediately becomes a demand for distance.</p>
-        <p>The turn is funny because it exposes a contradiction. It can sound like a joke about fashionable loneliness, and at the same time like a serious portrait of how people protect themselves from intimacy, anxiety, loss, and grief.</p>
+        <p>It is almost perfect wit.</p>
+        <p>The turn is sharp and unexpected, the wording short and exact, almost mirror-built. The sentence stays in memory at once. The second half seems to mock the first, yet it also makes the line deeper than ordinary complaining, catching the contradiction in the human need to seek closeness and to pull away from it.</p>
 
-        <p>That is the standard the experiment is testing against: wit that is tight, humorous, sad, and deeper than it first appears.</p>
       </div>
     </section>
   </main>
