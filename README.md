@@ -82,6 +82,16 @@ Run the test suite from the repository root:
 python3 -m unittest discover -s tests -q
 ```
 
+## GitHub Pages
+
+The repository includes a workflow at `.github/workflows/pages.yml` that renders the static site and deploys only `index.html`, `html/`, and `assets/` to GitHub Pages.
+
+After pushing to `main`, set `Settings` -> `Pages` -> `Build and deployment` -> `Source` to `GitHub Actions`. The published project site URL will be:
+
+```text
+https://<owner>.github.io/<repository>/
+```
+
 ## Automation Contract
 
 The repository is intended to support two recurring automations:
