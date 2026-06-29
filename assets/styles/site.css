@@ -38,8 +38,16 @@ html {
 body {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top right, rgba(175, 198, 183, 0.22), transparent 28rem),
-    radial-gradient(circle at 0% 20%, rgba(215, 187, 145, 0.18), transparent 24rem),
+    radial-gradient(
+      circle at top right,
+      rgba(175, 198, 183, 0.22),
+      transparent 28rem
+    ),
+    radial-gradient(
+      circle at 0% 20%,
+      rgba(215, 187, 145, 0.18),
+      transparent 24rem
+    ),
     linear-gradient(180deg, #faf7f1 0%, var(--bg) 100%);
   color: var(--ink);
   font-family: "EB Garamond", Georgia, serif;
@@ -214,6 +222,10 @@ a {
   font-size: clamp(1.85rem, 2.9vw, 2.15rem);
 }
 
+.verdict-section .result-quote {
+  font-size: clamp(1.7rem, 2.65vw, 1.95rem);
+}
+
 .quote-panel {
   position: relative;
   padding: 0.55rem 1.4rem 0.55rem 2.2rem;
@@ -345,7 +357,11 @@ a {
 }
 
 .feature-quote {
-  background: linear-gradient(180deg, rgba(255, 252, 246, 0.94), rgba(244, 237, 225, 0.88));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 252, 246, 0.94),
+    rgba(244, 237, 225, 0.88)
+  );
   border-radius: 1.4rem;
   padding: 1.6rem 1.5rem 1.5rem;
   box-shadow: var(--shadow);
@@ -444,7 +460,7 @@ a {
 
 .cycle-node {
   position: absolute;
-  font-size: 0.78rem;
+  font-size: 0.88rem;
   line-height: 1.5;
   color: var(--ink);
 }
@@ -458,23 +474,28 @@ a {
 }
 
 .cycle-node--1 {
-  top: 8%;
+  top: 5%;
   left: 25%;
   width: 50%;
   text-align: center;
 }
 
 .cycle-node--2 {
-  top: 67%;
+  top: 65%;
   left: 64%;
-  width: 30%;
+  width: 36%;
+  text-align: center;
 }
 
 .cycle-node--3 {
-  top: 67%;
+  top: 65%;
   right: 64%;
-  width: 30%;
-  text-align: right;
+  width: 36%;
+  text-align: center;
+}
+
+.closing-section .section-copy > p:last-of-type {
+  font-size: 0.95rem;
 }
 
 @media (max-width: 620px) {
@@ -495,7 +516,11 @@ a {
 
 .criteria-band {
   margin-top: 1.5rem;
-  background: linear-gradient(180deg, rgba(255, 251, 245, 0.78), rgba(243, 235, 224, 0.72));
+  background: linear-gradient(
+    180deg,
+    rgba(255, 251, 245, 0.78),
+    rgba(243, 235, 224, 0.72)
+  );
   border-radius: 1.5rem;
   padding: 1.2rem 1.25rem;
   display: grid;
