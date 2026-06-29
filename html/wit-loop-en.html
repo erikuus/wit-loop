@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../assets/styles/site.css?v=20260627a">
+  <link rel="stylesheet" href="../assets/styles/site.css?v=20260629c">
 </head>
 <body>
   <header class="page-header">
@@ -86,7 +86,38 @@
       <div class="section-copy">
         <h2>The Loop</h2>
         <p>The loop is the heart of this experiment. How does it work, and why is it necessary? If we asked the same AI conversation to keep proposing new versions and also judge them, it would start remembering its own earlier thoughts, preferring paths it had already taken, and defending its own decisions. To avoid that, we split the work into three parts. The first two components, the creator and the judge, are AI agents that start at fixed intervals. When the judge is done, an ordinary script performs the final step. Then, after some time, the cycle repeats.</p>
-        <ol class="step-list">
+        <div class="cycle-diagram" role="img" aria-label="Three loop stages: Creator, Judge, Checker">
+          <svg class="cycle-svg" viewBox="0 0 560 640" aria-hidden="true">
+            <defs>
+              <marker id="cycle-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+                <path d="M0,1 L7,4 L0,7 Z" fill="rgba(71,60,48,0.22)"/>
+              </marker>
+            </defs>
+            <circle cx="280" cy="360" r="130" fill="none" stroke="rgba(71,60,48,0.14)" stroke-width="1"/>
+            <circle cx="280" cy="230" r="8.5" fill="rgba(176,138,87,0.12)"/>
+            <circle cx="280" cy="230" r="5.5" fill="#b08a57"/>
+            <circle cx="392.6" cy="425" r="8.5" fill="rgba(176,138,87,0.12)"/>
+            <circle cx="392.6" cy="425" r="5.5" fill="#b08a57"/>
+            <circle cx="167.4" cy="425" r="8.5" fill="rgba(176,138,87,0.12)"/>
+            <circle cx="167.4" cy="425" r="5.5" fill="#b08a57"/>
+            <line x1="389.1" y1="288.9" x2="396.1" y2="301.1" stroke="rgba(71,60,48,0.22)" stroke-width="1" marker-end="url(#cycle-arrow)"/>
+            <line x1="287" y1="490" x2="273" y2="490" stroke="rgba(71,60,48,0.22)" stroke-width="1" marker-end="url(#cycle-arrow)"/>
+            <line x1="163.9" y1="301.1" x2="170.9" y2="288.9" stroke="rgba(71,60,48,0.22)" stroke-width="1" marker-end="url(#cycle-arrow)"/>
+          </svg>
+          <div class="cycle-node cycle-node--1">
+            <p class="step-title">Creator</p>
+            <p>An AI agent that sees only the beginning of the sentence. It does not see the criteria, earlier attempts, or the current best line. It repeats the same task each time — complete the unfinished sentence so the result is witty — as if seeing it for the first time.</p>
+          </div>
+          <div class="cycle-node cycle-node--2">
+            <p class="step-title">Judge</p>
+            <p>An AI agent that sees one complete sentence and the judging criteria. It does not see earlier attempts or earlier scores. Each time it has one simple task: judge one sentence by the criteria.</p>
+          </div>
+          <div class="cycle-node cycle-node--3">
+            <p class="step-title">Checker</p>
+            <p>A script that runs after the judge. It recalculates the score, compares it with the current best one, and replaces the winner only if the number is higher.</p>
+          </div>
+        </div>
+        <ol class="step-list cycle-fallback">
           <li>
             <p class="step-title">Creator</p>
             <p>An AI agent that sees only the beginning of the sentence. It does not see the criteria, earlier attempts, or the current best line. It repeats the same task each time — complete the unfinished sentence so the result is witty — as if seeing it for the first time.</p>
