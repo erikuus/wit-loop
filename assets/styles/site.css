@@ -429,7 +429,7 @@ a {
 
 .cycle-diagram {
   position: relative;
-  aspect-ratio: 560 / 500;
+  aspect-ratio: 560 / 480;
   width: 100%;
   max-width: none;
   margin: 0;
@@ -458,7 +458,7 @@ a {
 }
 
 .cycle-node--1 {
-  top: 6%;
+  top: 8%;
   left: 25%;
   width: 50%;
   text-align: center;
@@ -467,13 +467,13 @@ a {
 .cycle-node--2 {
   top: 67%;
   left: 64%;
-  width: 24%;
+  width: 30%;
 }
 
 .cycle-node--3 {
   top: 67%;
   right: 64%;
-  width: 24%;
+  width: 30%;
   text-align: right;
 }
 
