@@ -84,7 +84,9 @@ python3 -m unittest discover -s tests -q
 
 ## GitHub Pages
 
-The repository includes a workflow at `.github/workflows/pages.yml` that renders the static site and deploys only `index.html`, `html/`, and `assets/` to GitHub Pages.
+The repository includes a workflow at `.github/workflows/pages.yml` that deploys the checked-in static site files from `index.html`, `html/`, and `assets/` to GitHub Pages.
+
+If you update the generated pages by hand, GitHub Pages will now publish those exact committed files. If you want the generator output instead, run `bin/render-site` before committing.
 
 After pushing to `main`, set `Settings` -> `Pages` -> `Build and deployment` -> `Source` to `GitHub Actions`. The published project site URL will be:
 
