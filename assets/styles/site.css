@@ -481,6 +481,7 @@ a {
   .cycle-diagram {
     display: none;
   }
+
   .cycle-fallback {
     display: block;
   }
