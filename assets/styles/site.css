@@ -230,15 +230,6 @@ a {
 
 .results-verdict {
   margin: 0 0 1.8rem;
-  padding: 1.3rem 1.35rem 1.2rem;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 252, 246, 0.92),
-    rgba(244, 237, 225, 0.84)
-  );
-  border: 1px solid rgba(130, 117, 98, 0.14);
-  border-radius: 1.2rem;
-  box-shadow: var(--shadow);
 }
 
 .results-verdict h2 {
