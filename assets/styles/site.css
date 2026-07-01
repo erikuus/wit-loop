@@ -222,8 +222,27 @@ a {
   font-size: clamp(1.85rem, 2.9vw, 2.15rem);
 }
 
-.verdict-section .result-quote {
+.verdict-section .result-quote,
+.results-verdict .result-quote {
   font-size: clamp(1.7rem, 2.65vw, 1.95rem);
+  margin-bottom: 1.7rem;
+}
+
+.results-verdict {
+  margin: 0 0 1.8rem;
+  padding: 1.3rem 1.35rem 1.2rem;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 252, 246, 0.92),
+    rgba(244, 237, 225, 0.84)
+  );
+  border: 1px solid rgba(130, 117, 98, 0.14);
+  border-radius: 1.2rem;
+  box-shadow: var(--shadow);
+}
+
+.results-verdict h2 {
+  margin-bottom: 0.45rem;
 }
 
 .quote-panel {
